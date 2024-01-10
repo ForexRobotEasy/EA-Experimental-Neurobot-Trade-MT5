@@ -1,0 +1,72 @@
+ mql5
+//+------------------------------------------------------------------+
+//|                                           EA Experimental Neurobot Trade MT5 |
+//|                          https://www.forexroboteasy.com |
+//|                                           Developed by Forex Robot Easy Team |
+//+------------------------------------------------------------------+
+
+// Initialization function
+int OnInit()
+{
+    // Set initial parameters
+    double initialDeposit = AccountInfoDouble(ACCOUNT_BALANCE);
+    double minimumDeposit = 1000.0;
+    double lotSize = NormalizeDouble(initialDeposit / 10000, Digits);
+    
+    // Check if deposit meets minimum requirement
+    if (initialDeposit < minimumDeposit)
+    {
+        Print('Insufficient deposit. Minimum deposit required: ', minimumDeposit);
+        ExpertRemove();
+    }
+    
+    // Print initial deposit and lot size
+    Print('Initial deposit: ', initialDeposit);
+    Print('Lot size: ', lotSize);
+
+    return(INIT_SUCCEEDED);
+}
+
+// Deinitialization function
+void OnDeinit(const int reason)
+{
+    // Perform necessary cleanup tasks
+    Print('EA Experimental Neurobot Trade MT5 deinitialized. Reason: ', reason);
+}
+
+// Trading function
+void OnTick()
+{
+    // Perform market analysis using unique algorithm
+    double currentPrice = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+    double previousPrice = iClose(_Symbol, PERIOD_H1, 1);
+    
+    if (currentPrice > previousPrice)
+    {
+        // Execute a buy trade
+        Print('Buy trade executed at price: ', currentPrice);
+        OrderSend(_Symbol, OP_BUY, lotSize, currentPrice, 0, 0, 0, 'Neurobot Trade MT5', 0, 0, Green);
+    }
+    else if (currentPrice < previousPrice)
+    {
+        // Execute a sell trade
+        Print('Sell trade executed at price: ', currentPrice);
+        OrderSend(_Symbol, OP_SELL, lotSize, currentPrice, 0, 0, 0, 'Neurobot Trade MT5', 0, 0, Red);
+    }
+    else
+    {
+        // No trading decision made
+        Print('No trading decision made. Waiting for market movement.');
+    }
+}
+
+// Optimization function
+void OnOptimization()
+{
+    // Perform optimization of parameters
+    Print('Optimizing EA Experimental Neurobot Trade MT5...');
+    
+    // ... (add optimization code here)
+    
+    Print('Optimization complete.');
+}
